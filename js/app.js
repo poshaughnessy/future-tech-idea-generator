@@ -59,7 +59,7 @@ function Generator() {
     var PHRASES_SET_3 = [
         'App',
         'Platform',
-        'Noun',
+        'Network',
         'Framework',
         'Algorithm'
     ];
