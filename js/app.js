@@ -26,7 +26,7 @@ function Generator() {
         scene = new THREE.Scene();
 
         camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 10, 10000 );
-        camera.position.z = 1200;
+        camera.position.z = 1500;
         camera.lookAt( new THREE.Vector3(0, 0, 0) );
 
         scene.add( camera );
@@ -34,7 +34,7 @@ function Generator() {
         var cylinder = new THREE.CylinderGeometry(
             100, // radiusTop
             100, // radiusBottom
-            500, // height
+            600, // height
             50, // radiusSegments
             50, // heightSegments
             false // openEnded
@@ -46,8 +46,8 @@ function Generator() {
         spinner2 = new THREE.Mesh( cylinder, material );
         spinner3 = new THREE.Mesh( cylinder, material );
 
-        spinner1.position.x = -505;
-        spinner3.position.x = 505;
+        spinner1.position.x = -605;
+        spinner3.position.x = 605;
 
         spinner1.rotation.z = Math.PI / 2;
         spinner2.rotation.z = Math.PI / 2;
@@ -58,6 +58,8 @@ function Generator() {
         spinner3.rotation.x = 0.2;
 
         for( var i=0; i < spinner1Phrases.length; i++ ) {
+
+            console.log('rotation ' + i, (Math.PI * 2 * i / spinner1Phrases.length));
 
             var text = generateText(spinner1Phrases[i], (Math.PI * 2 * i / spinner1Phrases.length));
             spinner1.add( text );
@@ -114,9 +116,9 @@ function Generator() {
 
         var text3d = new THREE.TextGeometry( string, {
 
-            size: 50,
+            size: 40,
             height: 1,
-            curveSegments: 2,
+            curveSegments: 10,
             font: 'helvetiker'
 
         });
@@ -131,10 +133,11 @@ function Generator() {
 
         text.doubleSided = false;
 
+        text.position.x = 100 * Math.sin( rotation );
         text.position.y = centerOffset;
-        text.position.z = 100;
+        text.position.z = 100 * Math.cos( rotation );
 
-        text.position.x = rotation * 100;
+        text.rotation.y = rotation;
 
         text.rotation.z = -Math.PI / 2;
 
