@@ -1,16 +1,6 @@
 function Generator() {
 
-    console.log('Hello?');
-
-    var scene;
-    var camera;
-    var renderer;
-    var stats;
-
-    var spinner1;
-    var spinner2;
-    var spinner3;
-
+    // Theme adjectives
     var PHRASES_SET_1 = [
         'Gesture-controlled',
         'Voice-controlled',
@@ -36,6 +26,7 @@ function Generator() {
         'Educational'
     ];
 
+    // Product adjectives
     var PHRASES_SET_2 = [
         'Mobile',
         'Social',
@@ -56,6 +47,7 @@ function Generator() {
         'Personalisation'
     ];
 
+    // Product noun
     var PHRASES_SET_3 = [
         'App',
         'Platform',
@@ -64,10 +56,31 @@ function Generator() {
         'Algorithm'
     ];
 
+    var MAX_SPEED = 0.8;
+    var MIN_SPEED = 0.4;
+    var DECELERATION = 0.001;
+
+    var scene;
+    var camera;
+    var renderer;
+    var stats;
+
+    var spinner1;
+    var spinner2;
+    var spinner3;
+
+    var spinner1Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
+    var spinner2Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
+    var spinner3Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
+
+    var set1Phrases;
+    var set2Phrases;
+    var set3Phrases;
+
+    var finished = false;
+
 
     function init() {
-
-        console.log('Init');
 
         scene = new THREE.Scene();
 
@@ -103,27 +116,29 @@ function Generator() {
         spinner2.rotation.x = 0.1;
         spinner3.rotation.x = 0.2;
 
-        var fivePhrasesFromSet1 = chooseRandomFromArray(PHRASES_SET_1, 5);
+        set1Phrases = chooseRandomFromArray(PHRASES_SET_1, 5);
 
-        for( var i=0; i < fivePhrasesFromSet1.length; i++ ) {
+        for( var i=0; i < set1Phrases.length; i++ ) {
 
-            var text = generateText(fivePhrasesFromSet1[i], (Math.PI * 2 * i / 5));
+            var text = generateText(set1Phrases[i], (Math.PI * 2 * i / 5));
             spinner1.add( text );
 
         }
 
-        var fivePhrasesFromSet2 = chooseRandomFromArray(PHRASES_SET_2, 5);
+        set2Phrases = chooseRandomFromArray(PHRASES_SET_2, 5);
 
-        for( var i=0; i < fivePhrasesFromSet2.length; i++ ) {
+        for( var i=0; i < set2Phrases.length; i++ ) {
 
-            var text = generateText(fivePhrasesFromSet2[i], (Math.PI * 2 * i / 5));
+            var text = generateText(set2Phrases[i], (Math.PI * 2 * i / 5));
             spinner2.add( text );
 
         }
 
-        for( var i=0; i < PHRASES_SET_3.length; i++ ) {
+        set3Phrases = PHRASES_SET_3;
 
-            var text = generateText(PHRASES_SET_3[i], (Math.PI * 2 * i / PHRASES_SET_3.length));
+        for( var i=0; i < set3Phrases.length; i++ ) {
+
+            var text = generateText(set3Phrases[i], (Math.PI * 2 * i / set3Phrases.length));
             spinner3.add( text );
 
         }
@@ -182,15 +197,51 @@ function Generator() {
 
     function animate() {
 
-        requestAnimationFrame( animate );
+        if( !finished ) {
 
-        spinner1.rotation.x += 0.1;
-        spinner2.rotation.x += 0.1;
-        spinner3.rotation.x += 0.1;
+            requestAnimationFrame( animate );
 
-        renderer.render(scene, camera);
+            spinner1.rotation.x += spinner1Speed;
+            spinner2.rotation.x += spinner2Speed;
+            spinner3.rotation.x += spinner3Speed;
 
-        stats.update();
+            if( spinner1Speed > 0 ) spinner1Speed -= Math.min(DECELERATION, spinner1Speed);
+            if( spinner2Speed > 0 ) spinner2Speed -= Math.min(DECELERATION, spinner2Speed);
+            if( spinner3Speed > 0 ) spinner3Speed -= Math.min(DECELERATION, spinner3Speed);
+
+            if( spinner1Speed < DECELERATION && spinner2Speed < DECELERATION && spinner3Speed < DECELERATION ) {
+                finish();
+            }
+
+            renderer.render(scene, camera);
+
+            stats.update();
+
+        }
+
+    }
+
+    function finish() {
+
+        finished = true;
+
+        var set1MaxZ = 0;
+        var set2MaxZ = 0;
+        var set3MaxZ = 0;
+
+        var phrase1;
+        var phrase2;
+        var phrase3;
+
+        for( var i=0; i < spinner1.children.length; i++ ) {
+
+            console.log(set1Phrases[i]);
+
+            console.log(spinner1.children[i]);
+
+            console.log(i, spinner1.children[i].rotation.x );
+
+        }
 
     }
 
