@@ -11,11 +11,57 @@ function Generator() {
     var spinner2;
     var spinner3;
 
-    var spinner1Phrases = [
+    var PHRASES_SET_1 = [
         'Gesture-controlled',
         'Voice-controlled',
         'Adaptive',
-        'Responsive'
+        'Responsive',
+        'Artificial intelligence',
+        'Smart',
+        'Context-aware',
+        'Immersive',
+        'Content-first',
+        'Distributed',
+        'Interactive',
+        'Collaborative',
+        'Cloud-based',
+        'Machine-learning',
+        '3D',
+        'Embedded',
+        'Machine-learning',
+        'WebGL',
+        'Big Data',
+        'Wearable',
+        'Location-based',
+        'Educational'
+    ];
+
+    var PHRASES_SET_2 = [
+        'Mobile',
+        'Social',
+        'Tablet',
+        'Mobile-first',
+        'Analysis',
+        'Recommendation',
+        'Smartphone',
+        'Smart-watch',
+        'Cloud',
+        'Learning',
+        'Web',
+        'Mobile Web',
+        'Geolocation',
+        'Gaming',
+        'E-Reader',
+        'iBook',
+        'Personalisation'
+    ];
+
+    var PHRASES_SET_3 = [
+        'App',
+        'Platform',
+        'Noun',
+        'Framework',
+        'Algorithm'
     ];
 
 
@@ -57,12 +103,28 @@ function Generator() {
         spinner2.rotation.x = 0.1;
         spinner3.rotation.x = 0.2;
 
-        for( var i=0; i < spinner1Phrases.length; i++ ) {
+        var fivePhrasesFromSet1 = chooseRandomFromArray(PHRASES_SET_1, 5);
 
-            console.log('rotation ' + i, (Math.PI * 2 * i / spinner1Phrases.length));
+        for( var i=0; i < fivePhrasesFromSet1.length; i++ ) {
 
-            var text = generateText(spinner1Phrases[i], (Math.PI * 2 * i / spinner1Phrases.length));
+            var text = generateText(fivePhrasesFromSet1[i], (Math.PI * 2 * i / 5));
             spinner1.add( text );
+
+        }
+
+        var fivePhrasesFromSet2 = chooseRandomFromArray(PHRASES_SET_2, 5);
+
+        for( var i=0; i < fivePhrasesFromSet2.length; i++ ) {
+
+            var text = generateText(fivePhrasesFromSet2[i], (Math.PI * 2 * i / 5));
+            spinner2.add( text );
+
+        }
+
+        for( var i=0; i < PHRASES_SET_3.length; i++ ) {
+
+            var text = generateText(PHRASES_SET_3[i], (Math.PI * 2 * i / PHRASES_SET_3.length));
+            spinner3.add( text );
 
         }
 
@@ -95,6 +157,26 @@ function Generator() {
         $('body').append( stats.domElement );
 
         animate();
+
+    }
+
+    function chooseRandomFromArray(array, numberToChoose) {
+
+        var chosen = new Array();
+
+        while( chosen.length < numberToChoose ) {
+
+            var index = Math.floor(Math.random() * array.length);
+
+            var choice = array[index];
+
+            if( $.inArray( choice, chosen ) == -1 ) {
+                chosen.push( choice );
+            }
+
+        }
+
+        return chosen;
 
     }
 
