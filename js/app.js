@@ -101,11 +101,16 @@ function Generator() {
     var set4Phrases;
 
     var lever;
+    var leverHandle;
+    var leverKnob;
+
     var leverRotationDelta;
     var leverRotationDownSpeed = 0.05;
     var leverRotationUpSpeed = 0.1;
 
     var spinning = false;
+
+    var projector = new THREE.Projector();
 
 
     function init() {
@@ -174,7 +179,7 @@ function Generator() {
 
         var leverHandleMaterial = new THREE.MeshLambertMaterial( {color: 0xcccccc} );
 
-        var leverHandle = new THREE.Mesh( leverCylinder, leverHandleMaterial );
+        leverHandle = new THREE.Mesh( leverCylinder, leverHandleMaterial );
 
         var leverSphere = new THREE.SphereGeometry(
             60, // radius
@@ -184,7 +189,7 @@ function Generator() {
 
         var leverKnobMaterial = new THREE.MeshLambertMaterial( {color: 0xff0000} );
 
-        var leverKnob = new THREE.Mesh( leverSphere, leverKnobMaterial );
+        leverKnob = new THREE.Mesh( leverSphere, leverKnobMaterial );
 
         leverKnob.position.y = 200;
 
@@ -250,6 +255,7 @@ function Generator() {
 
         window.addEventListener( 'resize', onWindowResize, false );
         document.addEventListener( 'keydown', onDocumentKeyDown, false );
+        renderer.domElement.addEventListener( 'mousedown', onMouseDown, false );
 
     }
 
@@ -523,6 +529,27 @@ function Generator() {
                 break;
         }
 
+    }
+
+    function onMouseDown( event ) {
+
+        event.preventDefault();
+
+        var clickX = event.clientX;
+        var clickY = event.clientY;
+
+        var vector = new THREE.Vector3( ( clickX / window.innerWidth ) * 2 - 1, - ( clickY / window.innerHeight ) * 2 + 1, 0.5 );
+        projector.unprojectVector( vector, camera );
+
+        var ray = new THREE.Ray( camera.position, vector.subSelf( camera.position ).normalize() );
+
+        var intersects = ray.intersectObjects( [leverHandle, leverKnob] );
+
+        if ( intersects.length > 0 ) {
+            // Clicked on the lever
+            spin();
+
+        }
     }
 
     init();
