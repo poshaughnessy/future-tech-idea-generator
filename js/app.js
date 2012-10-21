@@ -429,13 +429,13 @@ function Generator() {
 
         $('#idea').html(
             '<h3>'+idea+'</h3>' +
-            '<a href="https://twitter.com/share" class="twitter-share-button" data-via="poshaughnessy" ' +
-                'data-text="My next big idea is: ' + idea + '. Find out yours with the Future Tech Idea Generator." ' +
+            '<a href="https://twitter.com/share" class="twitter-share-button"' +
+                'data-text="My next big idea is: ' + idea + '. Find out yours with the Future Technologies Idea Generator." ' +
                 'data-size="large">Tweet</a>' +
             '<div class="retryContainer"></div>');
 
         var retryButton = $('<a href="#" class="retry">Retry</a>');
-        retryButton.click(function() {spin();});
+        retryButton.click(function() {spin(); return false;});
 
         $('.retryContainer').append(retryButton);
 
