@@ -78,7 +78,6 @@ function Generator() {
     var set3Phrases;
 
     var spinning = false;
-    var finished = false;
 
 
     function init() {
@@ -86,6 +85,7 @@ function Generator() {
         scene = new THREE.Scene();
 
         camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 10, 10000 );
+        camera.position.y = 100;
         camera.position.z = 1500;
         camera.lookAt( new THREE.Vector3(0, 0, 0) );
 
@@ -100,7 +100,6 @@ function Generator() {
             false // openEnded
         );
 
-        //var spinnerMaterial = new THREE.MeshPhongMaterial( { ambient: 0xeeeeee, color: 0xeeeeee, specular: 0x555555, shininess: 30 } );
         var spinnerMaterial = new THREE.MeshLambertMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/cylinder4.jpg' ) } );
 
         spinner1 = new THREE.Mesh( cylinder, spinnerMaterial );
@@ -118,33 +117,7 @@ function Generator() {
         spinner2.rotation.x = 0.1;
         spinner3.rotation.x = 0.2;
 
-        set1Phrases = chooseRandomFromArray(PHRASES_SET_1, 5);
-
-        for( var i=0; i < set1Phrases.length; i++ ) {
-
-            var text = generateText(set1Phrases[i], (Math.PI * 2 * i / 5));
-            spinner1.add( text );
-
-        }
-
-        set2Phrases = chooseRandomFromArray(PHRASES_SET_2, 5);
-
-        for( var i=0; i < set2Phrases.length; i++ ) {
-
-            var text = generateText(set2Phrases[i], (Math.PI * 2 * i / 5));
-            spinner2.add( text );
-
-        }
-
-        set3Phrases = PHRASES_SET_3;
-        set3Phrases.sort( function(){ return (Math.round(Math.random())-0.5); } ); // Randomise
-
-        for( var i=0; i < set3Phrases.length; i++ ) {
-
-            var text = generateText(set3Phrases[i], (Math.PI * 2 * i / set3Phrases.length));
-            spinner3.add( text );
-
-        }
+        setupPhrases();
 
         scene.add( spinner1 );
         scene.add( spinner2 );
@@ -225,9 +198,62 @@ function Generator() {
 
     }
 
+    function clearPhrases() {
+
+        removePhrases( spinner1 );
+        removePhrases( spinner2 );
+        removePhrases( spinner3 );
+
+    }
+
+    function removePhrases( spinner ) {
+
+        for( var i = spinner.children.length; i >= 0; i-- ) {
+            var child = spinner.children[i];
+            spinner.remove( child );
+        }
+
+    }
+
+    function setupPhrases() {
+
+        clearPhrases();
+
+        set1Phrases = chooseRandomFromArray(PHRASES_SET_1, 5);
+
+        for( var i=0; i < set1Phrases.length; i++ ) {
+
+            var text = generateText(set1Phrases[i], (Math.PI * 2 * i / 5));
+            spinner1.add( text );
+
+        }
+
+        set2Phrases = chooseRandomFromArray(PHRASES_SET_2, 5);
+
+        for( var i=0; i < set2Phrases.length; i++ ) {
+
+            var text = generateText(set2Phrases[i], (Math.PI * 2 * i / 5));
+            spinner2.add( text );
+
+        }
+
+        set3Phrases = PHRASES_SET_3;
+        set3Phrases.sort( function(){ return (Math.round(Math.random())-0.5); } ); // Randomise
+
+        for( var i=0; i < set3Phrases.length; i++ ) {
+
+            var text = generateText(set3Phrases[i], (Math.PI * 2 * i / set3Phrases.length));
+            spinner3.add( text );
+
+        }
+
+    }
+
     function spin() {
 
         if( !spinning ) {
+
+            setupPhrases();
 
             spinner1Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
             spinner2Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
@@ -320,6 +346,7 @@ function Generator() {
             // Space key
             case 32:
                 spin();
+                event.preventDefault();
                 break;
         }
 
