@@ -137,7 +137,7 @@ function Generator() {
             false // openEnded
         );
 
-        var spinnerMaterial = new THREE.MeshLambertMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/cylinder4.jpg' ) } );
+        var spinnerMaterial = new THREE.MeshLambertMaterial( { map: THREE.ImageUtils.loadTexture( 'images/spinner-texture.jpg' ) } );
 
         spinner1 = new THREE.Mesh( spinnerCylinder, spinnerMaterial );
         spinner2 = new THREE.Mesh( spinnerCylinder, spinnerMaterial );
