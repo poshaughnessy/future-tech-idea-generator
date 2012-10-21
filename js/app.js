@@ -77,34 +77,42 @@ function Generator() {
     var set2Phrases;
     var set3Phrases;
 
+    var lever;
+    var leverRotationDelta;
+    var leverRotationSpeed = 0.05;
+
     var spinning = false;
 
 
     function init() {
 
+        // Scene & camera
+
         scene = new THREE.Scene();
 
         camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 10, 10000 );
         camera.position.y = 100;
-        camera.position.z = 1500;
+        camera.position.z = 1800;
         camera.lookAt( new THREE.Vector3(0, 0, 0) );
 
         scene.add( camera );
 
-        var cylinder = new THREE.CylinderGeometry(
-            100, // radiusTop
-            100, // radiusBottom
-            600, // height
-            50, // radiusSegments
-            50, // heightSegments
+        // Spinners
+
+        var spinnerCylinder = new THREE.CylinderGeometry(
+            100,  // radiusTop
+            100,  // radiusBottom
+            600,  // height
+            50,   // radiusSegments
+            50,   // heightSegments
             false // openEnded
         );
 
         var spinnerMaterial = new THREE.MeshLambertMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/cylinder4.jpg' ) } );
 
-        spinner1 = new THREE.Mesh( cylinder, spinnerMaterial );
-        spinner2 = new THREE.Mesh( cylinder, spinnerMaterial );
-        spinner3 = new THREE.Mesh( cylinder, spinnerMaterial );
+        spinner1 = new THREE.Mesh( spinnerCylinder, spinnerMaterial );
+        spinner2 = new THREE.Mesh( spinnerCylinder, spinnerMaterial );
+        spinner3 = new THREE.Mesh( spinnerCylinder, spinnerMaterial );
 
         spinner1.position.x = -605;
         spinner3.position.x = 605;
@@ -123,6 +131,55 @@ function Generator() {
         scene.add( spinner2 );
         scene.add( spinner3 );
 
+        // Lever
+
+        var leverCylinder = new THREE.CylinderGeometry(
+            20,   // radiusTop
+            20,   // radiusBottom
+            500,  // height
+            50,   // radiusSegments
+            50,   // heightSegments
+            false // openEnded
+        );
+
+        var leverHandleMaterial = new THREE.MeshLambertMaterial( {color: 0xcccccc} );
+
+        var leverHandle = new THREE.Mesh( leverCylinder, leverHandleMaterial );
+
+        //leverHandle.position.x = 1105;
+        //leverHandle.position.y = 140;
+        //leverHandle.position.z = -220;
+
+        var leverSphere = new THREE.SphereGeometry(
+            60, // radius
+            50, // segmentsWidth
+            50  // segmentsHeight
+        );
+
+        var leverKnobMaterial = new THREE.MeshLambertMaterial( {color: 0xff0000} );
+
+        var leverKnob = new THREE.Mesh( leverSphere, leverKnobMaterial );
+
+        leverKnob.position.y = 200;
+
+        // Parent object used to set rotation origin
+        lever = new THREE.Object3D();
+        lever.position.x = 1105;
+        lever.position.y = -100;
+        lever.position.z = -320;
+
+        leverHandle.add( leverKnob );
+
+        lever.add( leverHandle );
+
+        leverHandle.position.y = 250;
+        leverHandle.position.z = 100;
+        leverHandle.rotation.x = 0.5;
+
+        scene.add( lever );
+
+        // Lighting
+
         var ambientLight = new THREE.AmbientLight( 0x222222 );
         scene.add( ambientLight );
 
@@ -131,12 +188,16 @@ function Generator() {
         spotlight.target.position.set( 0, 0, 0 );
         scene.add( spotlight );
 
+        // Renderer
+
         renderer = new THREE.WebGLRenderer({antialias: true, clearColor: 0x000000});
 
         renderer.setSize( window.innerWidth, window.innerHeight );
         renderer.clear();
 
         $('body').append( $(renderer.domElement) );
+
+        // Stats
 
         stats = new Stats();
 
@@ -189,6 +250,24 @@ function Generator() {
             if( spinner1Speed < DECELERATION && spinner2Speed < DECELERATION && spinner3Speed < DECELERATION ) {
                 finish();
             }
+
+        }
+
+        if( leverRotationDelta > 0 ) {
+
+            var rotationAmount = Math.min( leverRotationDelta, leverRotationSpeed );
+
+            lever.rotation.x += rotationAmount;
+
+            leverRotationDelta -= rotationAmount;
+
+        } else if( leverRotationDelta < 0 ) {
+
+            var rotationAmount = Math.min( Math.abs(leverRotationDelta), leverRotationSpeed );
+
+            lever.rotation.x -= rotationAmount;
+
+            leverRotationDelta += rotationAmount;
 
         }
 
@@ -249,11 +328,25 @@ function Generator() {
 
     }
 
+    function startLeverDownAnimation() {
+
+        leverRotationDelta = Math.PI / 2;
+
+    }
+
+    function startLeverUpAnimation() {
+
+        leverRotationDelta = -Math.PI / 2;
+
+    }
+
     function spin() {
 
         if( !spinning ) {
 
             setupPhrases();
+
+            startLeverDownAnimation();
 
             spinner1Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
             spinner2Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
@@ -270,6 +363,8 @@ function Generator() {
         if( spinning ) {
 
             spinning = false;
+
+            startLeverUpAnimation();
 
             var phrase1 = getChosenPhrase( spinner1 );
             var phrase2 = getChosenPhrase( spinner2 );
