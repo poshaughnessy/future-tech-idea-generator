@@ -115,6 +115,16 @@ function Generator() {
 
     function init() {
 
+        if( !Detector.webgl ) {
+
+            // No WebGL support
+
+            $('#noWebGL').show();
+            $('#instructions').hide();
+            return;
+
+        }
+
         // Scene & camera
 
         scene = new THREE.Scene();

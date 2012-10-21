@@ -50,6 +50,7 @@ table {
 /* Start of our own styles */
 body {
     background: #222222;
+    color: #fff;
     margin: 0;
     padding: 0;
     overflow: hidden;
@@ -66,7 +67,6 @@ h1 {
     font-size: 3em;
     font-family: 'Audiowide', arial, sans-serif;
     text-align: center;
-    color: #fff;
     margin: 0;
     text-shadow: 2px 2px 2px #000;
 }
@@ -97,7 +97,6 @@ h2 {
 }
 
 #idea h3 {
-    color: #fff;
     font-size: 2em;
     text-align: center;
     padding-top: 1em;
@@ -121,7 +120,6 @@ h2 {
 }
 
 footer {
-    color: #fff;
     position: absolute;
     bottom: 10px;
     width: 100%;
@@ -130,8 +128,16 @@ footer {
 
 footer p {
     text-align: center;
-    font-family: arial, sans-serif;
     width: 100%;
     margin-bottom: 1em;
     font-size: 1.1em;
+}
+
+footer p#noWebGL {
+    display: none;
+    font-size: 1.2em;
+}
+
+footer p a {
+    color: #5ed9e4;
 }
