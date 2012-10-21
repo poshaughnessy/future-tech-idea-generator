@@ -135,6 +135,7 @@ function Generator() {
         }
 
         set3Phrases = PHRASES_SET_3;
+        set3Phrases.sort( function(){ return (Math.round(Math.random())-0.5); } ); // Randomise
 
         for( var i=0; i < set3Phrases.length; i++ ) {
 
@@ -225,40 +226,34 @@ function Generator() {
 
         finished = true;
 
-        var set1Max = 0;
-        var set2Max = 0;
-        var set3Max = 0;
+        var phrase1 = getChosenPhrase( spinner1 );
+        var phrase2 = getChosenPhrase( spinner2 );
+        var phrase3 = getChosenPhrase( spinner3 );
 
-        var phrase1;
-        var phrase2;
-        var phrase3;
+        alert( phrase1 + ' ' + phrase2 + ' ' + phrase3 );
 
-        for( var i=0; i < spinner1.children.length; i++ ) {
+    }
 
-            /*
-            console.log(set1Phrases[i]);
+    function getChosenPhrase( spinner ) {
 
-            console.log('pos', spinner1.children[i].position);
-            console.log('rot', spinner1.children[i].rotation);
+        var chosen;
+        var zPosMax = 0;
 
-            console.log('sin', Math.sin(spinner1.children[i].rotation.y));
-            console.log('cos', Math.cos(spinner1.children[i].rotation.y));
-            */
+        for( var i=0; i < spinner.children.length; i++ ) {
 
-            //console.log(i, spinner1.children[i].rotation.x );
+            var textMesh = spinner.children[i];
 
-            var textGeo = spinner1.children[i];
+            // Need to calculate 'world position' of child
+            var worldPos = textMesh.matrixWorld.multiplyVector3( new THREE.Vector3() );
 
-            var zPos = Math.sin(textGeo.rotation.y);
-
-            if( zPos > set1Max ) {
-                phrase1 = set1Phrases[i];
-                set1Max = zPos;
+            if( worldPos.z > zPosMax ) {
+                chosen = textMesh.originalText;
+                zPosMax = worldPos.z;
             }
 
         }
 
-        alert( phrase1 );
+        return chosen;
 
     }
 
@@ -280,6 +275,9 @@ function Generator() {
         var textMaterial = new THREE.MeshBasicMaterial( { color: 0x111111, overdraw: true } );
 
         var text = new THREE.Mesh( text3d, textMaterial );
+
+        // Keep a reference to the text - useful for later
+        text.originalText = string;
 
         text.doubleSided = false;
 
