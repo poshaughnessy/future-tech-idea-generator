@@ -79,7 +79,8 @@ function Generator() {
 
     var lever;
     var leverRotationDelta;
-    var leverRotationSpeed = 0.05;
+    var leverRotationDownSpeed = 0.05;
+    var leverRotationUpSpeed = 0.1;
 
     var spinning = false;
 
@@ -165,15 +166,15 @@ function Generator() {
         // Parent object used to set rotation origin
         lever = new THREE.Object3D();
         lever.position.x = 1105;
-        lever.position.y = -100;
-        lever.position.z = -320;
+        lever.position.y = -70;  // We want overall position of 140
+        lever.position.z = -290; // We want overall position of -220
 
         leverHandle.add( leverKnob );
 
         lever.add( leverHandle );
 
-        leverHandle.position.y = 250;
-        leverHandle.position.z = 100;
+        leverHandle.position.y = 210;
+        leverHandle.position.z = 70;
         leverHandle.rotation.x = 0.5;
 
         scene.add( lever );
@@ -255,7 +256,7 @@ function Generator() {
 
         if( leverRotationDelta > 0 ) {
 
-            var rotationAmount = Math.min( leverRotationDelta, leverRotationSpeed );
+            var rotationAmount = Math.min( leverRotationDelta, leverRotationDownSpeed );
 
             lever.rotation.x += rotationAmount;
 
@@ -263,7 +264,7 @@ function Generator() {
 
         } else if( leverRotationDelta < 0 ) {
 
-            var rotationAmount = Math.min( Math.abs(leverRotationDelta), leverRotationSpeed );
+            var rotationAmount = Math.min( Math.abs(leverRotationDelta), leverRotationUpSpeed );
 
             lever.rotation.x -= rotationAmount;
 
