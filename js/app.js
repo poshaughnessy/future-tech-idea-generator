@@ -100,11 +100,12 @@ function Generator() {
             false // openEnded
         );
 
-        var material = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/cylinder3.jpg' ) } );
+        //var spinnerMaterial = new THREE.MeshPhongMaterial( { ambient: 0xeeeeee, color: 0xeeeeee, specular: 0x555555, shininess: 30 } );
+        var spinnerMaterial = new THREE.MeshLambertMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/cylinder4.jpg' ) } );
 
-        spinner1 = new THREE.Mesh( cylinder, material );
-        spinner2 = new THREE.Mesh( cylinder, material );
-        spinner3 = new THREE.Mesh( cylinder, material );
+        spinner1 = new THREE.Mesh( cylinder, spinnerMaterial );
+        spinner2 = new THREE.Mesh( cylinder, spinnerMaterial );
+        spinner3 = new THREE.Mesh( cylinder, spinnerMaterial );
 
         spinner1.position.x = -605;
         spinner3.position.x = 605;
@@ -149,15 +150,15 @@ function Generator() {
         scene.add( spinner2 );
         scene.add( spinner3 );
 
-        var ambientLight = new THREE.AmbientLight( 0x333333 );
+        var ambientLight = new THREE.AmbientLight( 0x222222 );
         scene.add( ambientLight );
 
-        var spotlight = new THREE.SpotLight(0xFFFFFF, 0.5, 2000);
-        spotlight.position.set( 0, 0, 2000 );
+        var spotlight = new THREE.SpotLight(0xFFFFFF, 0.7, 2500);
+        spotlight.position.set( 0, 0, 2500 );
         spotlight.target.position.set( 0, 0, 0 );
         scene.add( spotlight );
 
-        renderer = new THREE.WebGLRenderer({antialias: false, clearColor: 0x000000});
+        renderer = new THREE.WebGLRenderer({antialias: true, clearColor: 0x000000});
 
         renderer.setSize( window.innerWidth, window.innerHeight );
         renderer.clear();
@@ -231,7 +232,7 @@ function Generator() {
             spinner1Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
             spinner2Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
             spinner3Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
-            
+
             spinning = true;
 
         }
