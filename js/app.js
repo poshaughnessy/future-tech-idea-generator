@@ -182,17 +182,25 @@ function Generator() {
 
         // Lighting
 
-        var ambientLight = new THREE.AmbientLight( 0x222222 );
-        scene.add( ambientLight );
+        var spotlight1 = new THREE.SpotLight(0xFFFFFF, 0.4, 2500);
+        spotlight1.position.set( -400, 0, 2500 );
+        spotlight1.target.position.set( -400, 0, 0 );
 
-        var spotlight = new THREE.SpotLight(0xFFFFFF, 0.8, 2500);
-        spotlight.position.set( 0, 0, 2500 );
-        spotlight.target.position.set( 0, 0, 0 );
-        scene.add( spotlight );
+        var spotlight2 = new THREE.SpotLight(0xFFFFFF, 0.4, 2500);
+        spotlight2.position.set( -100, 0, 2500 );
+        spotlight2.target.position.set( -100, 0, 0 );
+
+        var spotlight3 = new THREE.SpotLight(0xFFFFFF, 0.4, 2500);
+        spotlight3.position.set( 300, 0, 2500 );
+        spotlight3.target.position.set( 300, 0, 0 );
+
+        scene.add( spotlight1 );
+        scene.add( spotlight2 );
+        scene.add( spotlight3 );
 
         // Renderer
 
-        renderer = new THREE.WebGLRenderer({antialias: true, clearColor: 0x000000});
+        renderer = new THREE.WebGLRenderer({antialias: true, clearColor: 0x111111});
 
         renderer.setSize( window.innerWidth, window.innerHeight );
         renderer.clear();
