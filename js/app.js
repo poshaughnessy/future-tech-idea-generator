@@ -115,8 +115,9 @@ function Generator() {
         spinner2 = new THREE.Mesh( spinnerCylinder, spinnerMaterial );
         spinner3 = new THREE.Mesh( spinnerCylinder, spinnerMaterial );
 
-        spinner1.position.x = -605;
-        spinner3.position.x = 605;
+        spinner1.position.x = -705;
+        spinner2.position.x = -100;
+        spinner3.position.x = 505;
 
         spinner1.rotation.z = Math.PI / 2;
         spinner2.rotation.z = Math.PI / 2;
@@ -165,7 +166,7 @@ function Generator() {
 
         // Parent object used to set rotation origin
         lever = new THREE.Object3D();
-        lever.position.x = 1105;
+        lever.position.x = 990;
         lever.position.y = -70;  // We want overall position of 140
         lever.position.z = -290; // We want overall position of -220
 
