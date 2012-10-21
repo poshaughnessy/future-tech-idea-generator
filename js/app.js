@@ -29,49 +29,51 @@ function Generator() {
 
     // Product adjectives
     var PHRASES_SET_2 = [
-        'Mobile',
-        'Social',
-        'Tablet',
-        'Mobile-first',
-        'Analysis',
-        'Recommendation',
-        'Smartphone',
-        'Smart-watch',
-        'Cloud',
-        'Learning',
+        'mobile',
+        'social',
+        'tablet',
+        'mobile-first',
+        'analysis',
+        'recommendation',
+        'smartphone',
+        'smart-watch',
+        'cloud',
+        'learning',
         'Web',
         'Mobile Web',
-        'Geolocation',
-        'Gaming',
-        'E-Reader',
+        'geolocation',
+        'gaming',
+        'e-Reader',
         'iBook',
-        'Personalisation'
+        'personalisation'
     ];
 
     // Product noun
     var PHRASES_SET_3 = [
-        'App',
-        'Platform',
-        'Framework',
-        'Algorithm',
-        'Service',
-        'Network',
+        'app',
+        'platform',
+        'framework',
+        'algorithm',
+        'service',
+        'network',
         'API'
     ];
 
     // Audience
     var PHRASES_SET_4 = [
-        'Life-long learners',
-        'Students',
-        'Teachers',
-        'News readers',
-        'Book readers',
-        'Schools',
-        'Businesses',
-        'Business executives',
-        'Children',
-        'Parents',
-        'Tourists'
+        'life-long learners',
+        'students',
+        'teachers',
+        'news readers',
+        'book readers',
+        'schools',
+        'businesses',
+        'business executives',
+        'children',
+        'parents',
+        'tourists',
+        'high-flyers',
+        'employees'
     ];
 
     var MAX_SPEED = 0.8;
@@ -246,6 +248,7 @@ function Generator() {
 
         animate();
 
+        window.addEventListener( 'resize', onWindowResize, false );
         document.addEventListener( 'keydown', onDocumentKeyDown, false );
 
     }
@@ -380,6 +383,8 @@ function Generator() {
 
         if( !spinning ) {
 
+            hideIdea();
+
             setupPhrases();
 
             startLeverDownAnimation();
@@ -416,13 +421,27 @@ function Generator() {
 
     function hideIdea() {
 
-        $('.idea').hide();
+        $('#idea').fadeOut();
 
     }
 
     function presentIdea(idea) {
 
-        $('.idea').html( idea).fadeIn();
+        $('#idea').html(
+            '<h3>'+idea+'</h3>' +
+            '<a href="https://twitter.com/share" class="twitter-share-button" data-via="poshaughnessy" ' +
+                'data-text="My next big idea is: ' + idea + '. Find out yours with the Future Tech Idea Generator." ' +
+                'data-size="large">Tweet</a>' +
+            '<div class="retryContainer"></div>');
+
+        var retryButton = $('<a href="#" class="retry">Retry</a>');
+        retryButton.click(function() {spin();});
+
+        $('.retryContainer').append(retryButton);
+
+        $.getScript('http://platform.twitter.com/widgets.js');
+
+        $('#idea').fadeIn();
 
     }
 
@@ -482,6 +501,15 @@ function Generator() {
         text.rotation.z = -Math.PI / 2;
 
         return text;
+
+    }
+
+    function onWindowResize() {
+
+        renderer.setSize( window.innerWidth, window.innerHeight );
+
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
 
     }
 
