@@ -185,7 +185,7 @@ function Generator() {
         var ambientLight = new THREE.AmbientLight( 0x222222 );
         scene.add( ambientLight );
 
-        var spotlight = new THREE.SpotLight(0xFFFFFF, 0.7, 2500);
+        var spotlight = new THREE.SpotLight(0xFFFFFF, 0.8, 2500);
         spotlight.position.set( 0, 0, 2500 );
         spotlight.target.position.set( 0, 0, 0 );
         scene.add( spotlight );
