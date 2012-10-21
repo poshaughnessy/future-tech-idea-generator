@@ -57,6 +57,10 @@ body {
     font-family: arial, sans-serif;
 }
 
+a {
+    color: #5ed9e4;
+}
+
 header {
     position: absolute;
     width: 100%;
@@ -150,8 +154,4 @@ footer p {
 footer p#noWebGL {
     display: none;
     font-size: 1.2em;
-}
-
-footer p a {
-    color: #5ed9e4;
 }

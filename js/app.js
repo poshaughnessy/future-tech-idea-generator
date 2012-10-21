@@ -117,8 +117,6 @@ function Generator() {
 
     var projector = new THREE.Projector();
 
-    // xx temp
-    var start;
 
     function init() {
 
@@ -400,21 +398,15 @@ function Generator() {
 
         clearPhrases();
 
-        console.log('cleared phrases', new Date().getTime() - start);
-
         set1Phrases = chooseRandomFromArray(PHRASES_SET_1, 5);
         set2Phrases = chooseRandomFromArray(PHRASES_SET_2, 5);
         set3Phrases = chooseRandomFromArray(PHRASES_SET_3, 5);
         set4Phrases = chooseRandomFromArray(PHRASES_SET_4, 5);
 
-        console.log('chosen phrases', new Date().getTime() - start);
-
         addPhrases( spinner1, set1Phrases, phraseTextMeshes1 );
         addPhrases( spinner2, set2Phrases, phraseTextMeshes2 );
         addPhrases( spinner3, set3Phrases, phraseTextMeshes3 );
         addPhrases( spinner4, set4Phrases, phraseTextMeshes4 );
-
-        console.log('added phrases', new Date().getTime() - start);
 
     }
 
@@ -449,17 +441,11 @@ function Generator() {
 
     function spin() {
 
-        console.log('spin', new Date().getTime() - start);
-
         if( !spinning ) {
 
             startLeverDownAnimation();
 
-            console.log('lever down start', new Date().getTime() - start);
-
             choosePhrases();
-
-            console.log('setup phrases', new Date().getTime() - start);
 
             spinner1Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
             spinner2Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
@@ -467,9 +453,6 @@ function Generator() {
             spinner4Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
 
             spinning = true;
-
-            console.log('set spinning to true', new Date().getTime() - start);
-
 
         }
 
@@ -598,9 +581,6 @@ function Generator() {
 
     function onMouseDown( event ) {
 
-        start = new Date().getTime();
-        console.log('mouse down', start );
-
         event.preventDefault();
 
         var clickX = event.clientX;
@@ -615,7 +595,6 @@ function Generator() {
 
         if ( intersects.length > 0 ) {
             // Clicked on the lever
-            console.log('clicked lever', new Date().getTime() - start);
             spin();
 
         }
