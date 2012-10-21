@@ -4,3 +4,39 @@ body {
     padding: 0;
     overflow: hidden;
 }
+
+header {
+    position: absolute;
+    width: 100%;
+    top: 0;
+}
+
+h1 {
+    font-size: 3em;
+    font-family: 'Audiowide', sans-serif;
+    text-align: center;
+    color: #fff;
+    margin: 0;
+    text-shadow: 2px 2px 2px #000;
+}
+
+h2 {
+    font-family: arial, sans-serif;
+    margin-bottom: 0.1em;
+    text-align: center;
+    color: #ccc;
+    text-shadow: 1px 1px 1px #000;
+}
+
+footer {
+    color: #fff;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    text-align: center;
+    font-family: arial, sans-serif;
+    width: 100%;
+}

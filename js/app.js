@@ -205,20 +205,25 @@ function Generator() {
         // Lighting
 
         var spotlight1 = new THREE.SpotLight(0xFFFFFF, 0.4, 2500);
-        spotlight1.position.set( -400, 0, 2500 );
-        spotlight1.target.position.set( -400, 0, 0 );
+        spotlight1.position.set( -600, 0, 2500 );
+        spotlight1.target.position.set( -600, 0, 0 );
 
-        var spotlight2 = new THREE.SpotLight(0xFFFFFF, 0.4, 2500);
+        var spotlight2 = new THREE.SpotLight(0xFFFFFF, 0.3, 2500);
         spotlight2.position.set( -100, 0, 2500 );
         spotlight2.target.position.set( -100, 0, 0 );
 
-        var spotlight3 = new THREE.SpotLight(0xFFFFFF, 0.4, 2500);
-        spotlight3.position.set( 300, 0, 2500 );
+        var spotlight3 = new THREE.SpotLight(0xFFFFFF, 0.3, 2500);
+        spotlight3.position.set( 400, 0, 2500 );
         spotlight3.target.position.set( 300, 0, 0 );
+
+        var spotlight4 = new THREE.SpotLight(0xFFFFFF, 0.4, 2500);
+        spotlight4.position.set( 900, 0, 2500 );
+        spotlight4.target.position.set( 900, 0, 0 );
 
         scene.add( spotlight1 );
         scene.add( spotlight2 );
         scene.add( spotlight3 );
+        scene.add( spotlight4 );
 
         // Renderer
 
@@ -403,9 +408,21 @@ function Generator() {
             var phrase3 = getChosenPhrase( spinner3 );
             var phrase4 = getChosenPhrase( spinner4 );
 
-            alert( phrase1 + ' ' + phrase2 + ' ' + phrase3 + ' for ' + phrase4 );
+            presentIdea( phrase1 + ' ' + phrase2 + ' ' + phrase3 + ' for ' + phrase4 );
 
         }
+
+    }
+
+    function hideIdea() {
+
+        $('.idea').hide();
+
+    }
+
+    function presentIdea(idea) {
+
+        $('.idea').html( idea).fadeIn();
 
     }
 
