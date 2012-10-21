@@ -443,6 +443,8 @@ function Generator() {
 
         if( !spinning ) {
 
+            hideIdea();
+            
             startLeverDownAnimation();
 
             choosePhrases();
