@@ -69,14 +69,15 @@ function Generator() {
     var spinner2;
     var spinner3;
 
-    var spinner1Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
-    var spinner2Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
-    var spinner3Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
+    var spinner1Speed;
+    var spinner2Speed;
+    var spinner3Speed;
 
     var set1Phrases;
     var set2Phrases;
     var set3Phrases;
 
+    var spinning = false;
     var finished = false;
 
 
@@ -165,7 +166,6 @@ function Generator() {
 
         stats = new Stats();
 
-        // Align top-left
         stats.domElement.style.position = 'absolute';
         stats.domElement.style.top = '0px';
         stats.domElement.style.right = '0px';
@@ -173,6 +173,8 @@ function Generator() {
         $('body').append( stats.domElement );
 
         animate();
+
+        document.addEventListener( 'keydown', onDocumentKeyDown, false );
 
     }
 
@@ -198,9 +200,9 @@ function Generator() {
 
     function animate() {
 
-        if( !finished ) {
+        requestAnimationFrame( animate );
 
-            requestAnimationFrame( animate );
+        if( spinning ) {
 
             spinner1.rotation.x += spinner1Speed;
             spinner2.rotation.x += spinner2Speed;
@@ -214,9 +216,23 @@ function Generator() {
                 finish();
             }
 
-            renderer.render(scene, camera);
+        }
 
-            stats.update();
+        renderer.render(scene, camera);
+
+        stats.update();
+
+    }
+
+    function spin() {
+
+        if( !spinning ) {
+
+            spinner1Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
+            spinner2Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
+            spinner3Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
+            
+            spinning = true;
 
         }
 
@@ -224,13 +240,17 @@ function Generator() {
 
     function finish() {
 
-        finished = true;
+        if( spinning ) {
 
-        var phrase1 = getChosenPhrase( spinner1 );
-        var phrase2 = getChosenPhrase( spinner2 );
-        var phrase3 = getChosenPhrase( spinner3 );
+            spinning = false;
 
-        alert( phrase1 + ' ' + phrase2 + ' ' + phrase3 );
+            var phrase1 = getChosenPhrase( spinner1 );
+            var phrase2 = getChosenPhrase( spinner2 );
+            var phrase3 = getChosenPhrase( spinner3 );
+
+            alert( phrase1 + ' ' + phrase2 + ' ' + phrase3 );
+
+        }
 
     }
 
@@ -293,10 +313,21 @@ function Generator() {
 
     }
 
+    function onDocumentKeyDown() {
+
+        switch( event.keyCode ) {
+            // Space key
+            case 32:
+                spin();
+                break;
+        }
+
+    }
+
     init();
 
 }
 
 $(function() {
-    new Generator();
+    Generator();
 });
