@@ -80,6 +80,11 @@ function Generator() {
     var MIN_SPEED = 0.4;
     var DECELERATION = 0.003;
 
+    var phraseTextMeshes1 = {};
+    var phraseTextMeshes2 = {};
+    var phraseTextMeshes3 = {};
+    var phraseTextMeshes4 = {};
+
     var scene;
     var camera;
     var renderer;
@@ -112,6 +117,8 @@ function Generator() {
 
     var projector = new THREE.Projector();
 
+    // xx temp
+    var start;
 
     function init() {
 
@@ -169,7 +176,8 @@ function Generator() {
         spinner3.rotation.x = 0.2;
         spinner4.rotation.x = 0.3;
 
-        setupPhrases();
+        generatePhrasesText();
+        choosePhrases();
 
         scene.add( spinner1 );
         scene.add( spinner2 );
@@ -274,19 +282,26 @@ function Generator() {
 
     }
 
+    /*
+     * Thanks Kyle Cronin.
+     * Using algorithm as described here: http://stackoverflow.com/questions/48087/
+     */
     function chooseRandomFromArray(array, numberToChoose) {
 
-        var chosen = new Array();
+        var chosen = [];
+        var numberChosen = 0;
 
-        while( chosen.length < numberToChoose ) {
+        for( var i=0, l=array.length; i < l; i++ ) {
 
-            var index = Math.floor(Math.random() * array.length);
+            var probabilityOfChoosing = (numberToChoose - numberChosen) / (l-i);
+            var random =  Math.random();
 
-            var choice = array[index];
-
-            if( $.inArray( choice, chosen ) == -1 ) {
-                chosen.push( choice );
+            if( random < probabilityOfChoosing ) {
+                chosen.push( array[i] );
+                numberChosen++;
             }
+
+            if( chosen.length == numberToChoose ) break;
 
         }
 
@@ -297,6 +312,10 @@ function Generator() {
     function animate() {
 
         requestAnimationFrame( animate );
+
+        renderer.render(scene, camera);
+
+        stats.update();
 
         if( spinning ) {
 
@@ -337,10 +356,6 @@ function Generator() {
 
         }
 
-        renderer.render(scene, camera);
-
-        stats.update();
-
     }
 
     function clearPhrases() {
@@ -361,29 +376,61 @@ function Generator() {
 
     }
 
-    function setupPhrases() {
+    function generatePhrasesText() {
+
+        for( var i=0, l=PHRASES_SET_1.length; i<l; i++ ) {
+            phraseTextMeshes1[PHRASES_SET_1[i]] = generateText(PHRASES_SET_1[i]);
+        }
+
+        for( var i=0, l=PHRASES_SET_2.length; i<l; i++) {
+            phraseTextMeshes2[PHRASES_SET_2[i]] = generateText(PHRASES_SET_2[i]);
+        }
+
+        for( var i=0, l=PHRASES_SET_3.length; i<l; i++) {
+            phraseTextMeshes3[PHRASES_SET_3[i]] = generateText(PHRASES_SET_3[i]);
+        }
+
+        for( var i=0, l=PHRASES_SET_4.length; i<l; i++) {
+            phraseTextMeshes4[PHRASES_SET_4[i]] = generateText(PHRASES_SET_4[i]);
+        }
+
+    }
+
+    function choosePhrases() {
 
         clearPhrases();
+
+        console.log('cleared phrases', new Date().getTime() - start);
 
         set1Phrases = chooseRandomFromArray(PHRASES_SET_1, 5);
         set2Phrases = chooseRandomFromArray(PHRASES_SET_2, 5);
         set3Phrases = chooseRandomFromArray(PHRASES_SET_3, 5);
         set4Phrases = chooseRandomFromArray(PHRASES_SET_4, 5);
 
-        addPhrases( spinner1, set1Phrases );
-        addPhrases( spinner2, set2Phrases );
-        addPhrases( spinner3, set3Phrases );
-        addPhrases( spinner4, set4Phrases );
+        console.log('chosen phrases', new Date().getTime() - start);
+
+        addPhrases( spinner1, set1Phrases, phraseTextMeshes1 );
+        addPhrases( spinner2, set2Phrases, phraseTextMeshes2 );
+        addPhrases( spinner3, set3Phrases, phraseTextMeshes3 );
+        addPhrases( spinner4, set4Phrases, phraseTextMeshes4 );
+
+        console.log('added phrases', new Date().getTime() - start);
 
     }
 
-    function addPhrases( spinner, phrases ) {
+    function addPhrases( spinner, phrases, phraseTextMeshes ) {
 
         for( var i=0; i < phrases.length; i++ ) {
 
-            var text = generateText(phrases[i], (Math.PI * 2 * i / 5));
-            spinner.add( text );
+            var mesh = phraseTextMeshes[ phrases[i] ];
 
+            var rotation = Math.PI * 2 * i / 5;
+
+            mesh.position.x = 100 * Math.sin( rotation );
+            mesh.position.z = 100 * Math.cos( rotation );
+            mesh.rotation.y = rotation;
+
+            spinner.add( phraseTextMeshes[ phrases[i] ] );
         }
 
     }
@@ -402,13 +449,17 @@ function Generator() {
 
     function spin() {
 
+        console.log('spin', new Date().getTime() - start);
+
         if( !spinning ) {
 
-            hideIdea();
-
-            setupPhrases();
-
             startLeverDownAnimation();
+
+            console.log('lever down start', new Date().getTime() - start);
+
+            choosePhrases();
+
+            console.log('setup phrases', new Date().getTime() - start);
 
             spinner1Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
             spinner2Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
@@ -416,6 +467,9 @@ function Generator() {
             spinner4Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
 
             spinning = true;
+
+            console.log('set spinning to true', new Date().getTime() - start);
+
 
         }
 
@@ -489,7 +543,7 @@ function Generator() {
 
     }
 
-    function generateText(string, rotation) {
+    function generateText(string) {
 
         var text3d = new THREE.TextGeometry( string, {
 
@@ -513,11 +567,7 @@ function Generator() {
 
         text.doubleSided = false;
 
-        text.position.x = 100 * Math.sin( rotation );
         text.position.y = centerOffset;
-        text.position.z = 100 * Math.cos( rotation );
-
-        text.rotation.y = rotation;
 
         text.rotation.z = -Math.PI / 2;
 
@@ -548,6 +598,9 @@ function Generator() {
 
     function onMouseDown( event ) {
 
+        start = new Date().getTime();
+        console.log('mouse down', start );
+
         event.preventDefault();
 
         var clickX = event.clientX;
@@ -562,6 +615,7 @@ function Generator() {
 
         if ( intersects.length > 0 ) {
             // Clicked on the lever
+            console.log('clicked lever', new Date().getTime() - start);
             spin();
 
         }
