@@ -106,7 +106,7 @@ h2 {
 #idea .retryContainer {
     text-align: center;
     position: absolute;
-    width: 100%;
+    width: 600px;
     bottom: 1em;
 }
 
@@ -117,7 +117,7 @@ h2 {
 }
 
 .twitter-share-button {
-    margin: 3em 0 0 50px;
+    margin: 3em 0 0 38px;
 }
 
 footer {
