@@ -23,7 +23,8 @@ function Generator() {
         'Big Data',
         'Wearable',
         'Location-based',
-        'Educational'
+        'Educational',
+        'Touch-based'
     ];
 
     // Product adjectives
@@ -51,9 +52,26 @@ function Generator() {
     var PHRASES_SET_3 = [
         'App',
         'Platform',
-        'Network',
         'Framework',
-        'Algorithm'
+        'Algorithm',
+        'Service',
+        'Network',
+        'API'
+    ];
+
+    // Audience
+    var PHRASES_SET_4 = [
+        'Life-long learners',
+        'Students',
+        'Teachers',
+        'News readers',
+        'Book readers',
+        'Schools',
+        'Businesses',
+        'Business executives',
+        'Children',
+        'Parents',
+        'Tourists'
     ];
 
     var MAX_SPEED = 0.8;
@@ -68,14 +86,17 @@ function Generator() {
     var spinner1;
     var spinner2;
     var spinner3;
+    var spinner4;
 
     var spinner1Speed;
     var spinner2Speed;
     var spinner3Speed;
+    var spinner4Speed;
 
     var set1Phrases;
     var set2Phrases;
     var set3Phrases;
+    var set4Phrases;
 
     var lever;
     var leverRotationDelta;
@@ -93,7 +114,7 @@ function Generator() {
 
         camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 10, 10000 );
         camera.position.y = 100;
-        camera.position.z = 1800;
+        camera.position.z = 2000;
         camera.lookAt( new THREE.Vector3(0, 0, 0) );
 
         scene.add( camera );
@@ -103,7 +124,7 @@ function Generator() {
         var spinnerCylinder = new THREE.CylinderGeometry(
             100,  // radiusTop
             100,  // radiusBottom
-            600,  // height
+            500,  // height
             50,   // radiusSegments
             50,   // heightSegments
             false // openEnded
@@ -114,24 +135,29 @@ function Generator() {
         spinner1 = new THREE.Mesh( spinnerCylinder, spinnerMaterial );
         spinner2 = new THREE.Mesh( spinnerCylinder, spinnerMaterial );
         spinner3 = new THREE.Mesh( spinnerCylinder, spinnerMaterial );
+        spinner4 = new THREE.Mesh( spinnerCylinder, spinnerMaterial );
 
-        spinner1.position.x = -705;
-        spinner2.position.x = -100;
-        spinner3.position.x = 505;
+        spinner1.position.x = -810;
+        spinner2.position.x = -305;
+        spinner3.position.x = 200;
+        spinner4.position.x = 705;
 
         spinner1.rotation.z = Math.PI / 2;
         spinner2.rotation.z = Math.PI / 2;
         spinner3.rotation.z = Math.PI / 2;
+        spinner4.rotation.z = Math.PI / 2;
 
         spinner1.rotation.x = 0
         spinner2.rotation.x = 0.1;
         spinner3.rotation.x = 0.2;
+        spinner4.rotation.x = 0.3;
 
         setupPhrases();
 
         scene.add( spinner1 );
         scene.add( spinner2 );
         scene.add( spinner3 );
+        scene.add( spinner4 );
 
         // Lever
 
@@ -148,10 +174,6 @@ function Generator() {
 
         var leverHandle = new THREE.Mesh( leverCylinder, leverHandleMaterial );
 
-        //leverHandle.position.x = 1105;
-        //leverHandle.position.y = 140;
-        //leverHandle.position.z = -220;
-
         var leverSphere = new THREE.SphereGeometry(
             60, // radius
             50, // segmentsWidth
@@ -166,7 +188,7 @@ function Generator() {
 
         // Parent object used to set rotation origin
         lever = new THREE.Object3D();
-        lever.position.x = 990;
+        lever.position.x = 1150;
         lever.position.y = -70;  // We want overall position of 140
         lever.position.z = -290; // We want overall position of -220
 
@@ -252,12 +274,17 @@ function Generator() {
             spinner1.rotation.x += spinner1Speed;
             spinner2.rotation.x += spinner2Speed;
             spinner3.rotation.x += spinner3Speed;
+            spinner4.rotation.x += spinner4Speed;
 
             if( spinner1Speed > 0 ) spinner1Speed -= Math.min(DECELERATION, spinner1Speed);
             if( spinner2Speed > 0 ) spinner2Speed -= Math.min(DECELERATION, spinner2Speed);
             if( spinner3Speed > 0 ) spinner3Speed -= Math.min(DECELERATION, spinner3Speed);
+            if( spinner4Speed > 0 ) spinner4Speed -= Math.min(DECELERATION, spinner4Speed);
 
-            if( spinner1Speed < DECELERATION && spinner2Speed < DECELERATION && spinner3Speed < DECELERATION ) {
+            if( spinner1Speed < DECELERATION &&
+                spinner2Speed < DECELERATION &&
+                spinner3Speed < DECELERATION &&
+                spinner4Speed < DECELERATION ) {
                 finish();
             }
 
@@ -292,6 +319,7 @@ function Generator() {
         removePhrases( spinner1 );
         removePhrases( spinner2 );
         removePhrases( spinner3 );
+        removePhrases( spinner4 );
 
     }
 
@@ -309,30 +337,23 @@ function Generator() {
         clearPhrases();
 
         set1Phrases = chooseRandomFromArray(PHRASES_SET_1, 5);
-
-        for( var i=0; i < set1Phrases.length; i++ ) {
-
-            var text = generateText(set1Phrases[i], (Math.PI * 2 * i / 5));
-            spinner1.add( text );
-
-        }
-
         set2Phrases = chooseRandomFromArray(PHRASES_SET_2, 5);
+        set3Phrases = chooseRandomFromArray(PHRASES_SET_3, 5);
+        set4Phrases = chooseRandomFromArray(PHRASES_SET_4, 5);
 
-        for( var i=0; i < set2Phrases.length; i++ ) {
+        addPhrases( spinner1, set1Phrases );
+        addPhrases( spinner2, set2Phrases );
+        addPhrases( spinner3, set3Phrases );
+        addPhrases( spinner4, set4Phrases );
 
-            var text = generateText(set2Phrases[i], (Math.PI * 2 * i / 5));
-            spinner2.add( text );
+    }
 
-        }
+    function addPhrases( spinner, phrases ) {
 
-        set3Phrases = PHRASES_SET_3;
-        set3Phrases.sort( function(){ return (Math.round(Math.random())-0.5); } ); // Randomise
+        for( var i=0; i < phrases.length; i++ ) {
 
-        for( var i=0; i < set3Phrases.length; i++ ) {
-
-            var text = generateText(set3Phrases[i], (Math.PI * 2 * i / set3Phrases.length));
-            spinner3.add( text );
+            var text = generateText(phrases[i], (Math.PI * 2 * i / 5));
+            spinner.add( text );
 
         }
 
@@ -361,6 +382,7 @@ function Generator() {
             spinner1Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
             spinner2Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
             spinner3Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
+            spinner4Speed = Math.max( Math.random() * MAX_SPEED, MIN_SPEED);
 
             spinning = true;
 
@@ -379,8 +401,9 @@ function Generator() {
             var phrase1 = getChosenPhrase( spinner1 );
             var phrase2 = getChosenPhrase( spinner2 );
             var phrase3 = getChosenPhrase( spinner3 );
+            var phrase4 = getChosenPhrase( spinner4 );
 
-            alert( phrase1 + ' ' + phrase2 + ' ' + phrase3 );
+            alert( phrase1 + ' ' + phrase2 + ' ' + phrase3 + ' for ' + phrase4 );
 
         }
 
@@ -413,7 +436,7 @@ function Generator() {
 
         var text3d = new THREE.TextGeometry( string, {
 
-            size: 40,
+            size: 30,
             height: 1,
             curveSegments: 10,
             font: 'helvetiker'
