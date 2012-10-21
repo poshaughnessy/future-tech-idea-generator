@@ -263,6 +263,11 @@ function Generator() {
 
         animate();
 
+        $('#close').click(function() {
+            hideIdea();
+            return false;
+        });
+
         window.addEventListener( 'resize', onWindowResize, false );
         document.addEventListener( 'keydown', onDocumentKeyDown, false );
         renderer.domElement.addEventListener( 'mousedown', onMouseDown, false );
@@ -443,7 +448,7 @@ function Generator() {
 
     function presentIdea(idea) {
 
-        $('#idea').html(
+        $('#idea .contents').html(
             '<h3>'+idea+'</h3>' +
             '<a href="https://twitter.com/share" class="twitter-share-button"' +
                 'data-text="My next big idea is: ' + idea + '. Find out yours with the Future Technologies Idea Generator." ' +

@@ -109,6 +109,20 @@ h2 {
     bottom: 1em;
 }
 
+#idea a#close {
+    display: block;
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    background: url(../images/close.png) no-repeat top left;
+}
+
+#idea #close span {
+    display: none;
+}
+
 #idea a.retry {
     color: #fff;
     font-size: 1.1em;
