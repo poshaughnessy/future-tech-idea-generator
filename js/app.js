@@ -58,7 +58,7 @@ function Generator() {
 
     var MAX_SPEED = 0.8;
     var MIN_SPEED = 0.4;
-    var DECELERATION = 0.001;
+    var DECELERATION = 0.003;
 
     var scene;
     var camera;
@@ -225,9 +225,9 @@ function Generator() {
 
         finished = true;
 
-        var set1MaxZ = 0;
-        var set2MaxZ = 0;
-        var set3MaxZ = 0;
+        var set1Max = 0;
+        var set2Max = 0;
+        var set3Max = 0;
 
         var phrase1;
         var phrase2;
@@ -235,13 +235,30 @@ function Generator() {
 
         for( var i=0; i < spinner1.children.length; i++ ) {
 
+            /*
             console.log(set1Phrases[i]);
 
-            console.log(spinner1.children[i]);
+            console.log('pos', spinner1.children[i].position);
+            console.log('rot', spinner1.children[i].rotation);
 
-            console.log(i, spinner1.children[i].rotation.x );
+            console.log('sin', Math.sin(spinner1.children[i].rotation.y));
+            console.log('cos', Math.cos(spinner1.children[i].rotation.y));
+            */
+
+            //console.log(i, spinner1.children[i].rotation.x );
+
+            var textGeo = spinner1.children[i];
+
+            var zPos = Math.sin(textGeo.rotation.y);
+
+            if( zPos > set1Max ) {
+                phrase1 = set1Phrases[i];
+                set1Max = zPos;
+            }
 
         }
+
+        alert( phrase1 );
 
     }
 
