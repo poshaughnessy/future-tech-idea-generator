@@ -39,8 +39,8 @@ function Generator() {
         'smart-watch',
         'cloud',
         'learning',
-        'Web',
-        'Mobile Web',
+        'web',
+        'mobile web',
         'geolocation',
         'gaming',
         'e-Reader',
@@ -52,6 +52,7 @@ function Generator() {
     var PHRASES_SET_3 = [
         'app',
         'platform',
+        'site',
         'framework',
         'algorithm',
         'service',
