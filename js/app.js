@@ -490,7 +490,7 @@ function Generator() {
         $('#idea .contents').html(
             '<h3>'+idea+'</h3>' +
             '<a href="https://twitter.com/share" class="twitter-share-button"' +
-                'data-text="My next big idea is: ' + idea + '. Find out yours with the Future Technologies Idea Generator." ' +
+                'data-text="My next big idea is: \'' + idea + '\'. #FutureTechIdeaGenerator" ' +
                 'data-size="large">Tweet</a>' +
             '<div class="retryContainer"></div>');
 
