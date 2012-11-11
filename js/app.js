@@ -68,12 +68,13 @@ function Generator() {
         'book readers',
         'schools',
         'businesses',
-        'business executives',
+        'business execs',
         'children',
         'parents',
         'tourists',
         'high-flyers',
-        'employees'
+        'employees',
+        'young adults'
     ];
 
     var MAX_SPEED = 0.8;
@@ -289,13 +290,17 @@ function Generator() {
         var chosen = [];
         var numberChosen = 0;
 
-        for( var i=0, l=array.length; i < l; i++ ) {
+        // First we randomise the order of the array
+        var randomiseArray = array.slice(0);
+        randomiseArray.sort(function() {return 0.5 - Math.random()});
+
+        for( var i=0, l=randomiseArray.length; i < l; i++ ) {
 
             var probabilityOfChoosing = (numberToChoose - numberChosen) / (l-i);
             var random =  Math.random();
 
             if( random < probabilityOfChoosing ) {
-                chosen.push( array[i] );
+                chosen.push( randomiseArray[i] );
                 numberChosen++;
             }
 
