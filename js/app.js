@@ -613,5 +613,5 @@ function Generator() {
 }
 
 $(function() {
-    Generator();
+    new Generator();
 });
